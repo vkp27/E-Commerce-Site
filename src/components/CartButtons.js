@@ -7,7 +7,25 @@ import { useCartContext } from '../context/cart_context'
 import { useUserContext } from '../context/user_context'
 
 const CartButtons = () => {
-  return <h4>cart buttons </h4>
+  const { closeSidebar } = useProductsContext()
+  return (
+    //two use cases of adding className to wrapper component -
+    //Either you have any parent that you would use to select the component you are creating.
+    //or there is some global class.
+    <Wrapper className='cart-btn-wrapper'>
+      <Link to='/cart' className='cart-btn' onClick={closeSidebar}>
+        Cart
+        <span className='cart-container'>
+          <FaShoppingCart />
+          <span className='cart-value'>12</span>
+        </span>
+      </Link>
+      <button type='button' className='auth-btn'>
+        Login
+        <FaUserPlus />
+      </button>
+    </Wrapper>
+  );
 }
 
 const Wrapper = styled.div`
