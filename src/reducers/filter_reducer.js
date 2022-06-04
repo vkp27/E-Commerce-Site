@@ -10,7 +10,21 @@ import {
   } from '../actions'
   
   const filter_reducer = (state, action) => {
-    return state
+    if(action.type === LOAD_PRODUCTS) {
+      return {
+        ...state,
+        //we use spread operator to fetch values and so on removing filters we can go  back to default values i.e. all products.
+        all_products: [...action.payload],
+        filtered_products: [...action.payload]
+      }
+    }
+    // to toggle b/w grid view and list view
+    if(action.type === SET_GRIDVIEW) {
+      return {...state, grid_view: true}
+    }
+    if(action.type === SET_LISTVIEW) {
+      return {...state, grid_view: false}
+    }
     throw new Error(`No Matching "${action.type}" - action type`)
   }
   
