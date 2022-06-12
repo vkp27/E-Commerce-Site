@@ -6,6 +6,8 @@ import { useCartContext } from '../context/cart_context'
 import AmountButtons from './AmountButtons'
 
 const AddToCart = ({product}) => {
+  //access addToCart function using useCartContext hook
+  const {addToCart} = useCartContext()
   const { id, stock, colors} = product
 
   //we setup state values as we want to have some default value and that default value is the first color of the colors array.
@@ -53,7 +55,10 @@ const AddToCart = ({product}) => {
       </div>
       <div className='btn-container'>
         <AmountButtons amount={amount} increase={increase} decrease={decrease} />
-        <Link to='/cart' className='btn'>
+        <Link 
+          to='/cart' 
+          className='btn' 
+          onClick={()=>addToCart(id,mainColor,amount,product)}>
           add to cart
         </Link>
       </div>
