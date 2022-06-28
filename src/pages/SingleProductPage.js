@@ -31,6 +31,7 @@ const SingleProductPage = () => {
   useEffect(() => {
     //we are combining url with id so that we could navigate to single product with given id
     fetchSingleProduct(`${url}${id}`)
+    // eslint-disable-next-line
   },[id])
 
   //using setTimeout we set an interval of 3sec and after that using UseNavigate() it redirects to homepage.
@@ -40,6 +41,7 @@ const SingleProductPage = () => {
         navigate('/')
       },3000)
     }
+    // eslint-disable-next-line
   },[error])
 
   if(loading){

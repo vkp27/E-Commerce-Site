@@ -8,7 +8,9 @@ import { useUserContext } from '../context/user_context'
 
 const CartButtons = () => {
   const { closeSidebar } = useProductsContext()
-  const { total_items } = useCartContext()
+  const { total_items, clearCart } = useCartContext()
+  //here loginWithRedirect is used for login, logout for logging out, and myUser consists of null as state value
+  const {loginWithRedirect, myUser, logout} = useUserContext()
   return (
     //two use cases of adding className to wrapper component -
     //Either you have any parent that you would use to select the component you are creating.
@@ -21,10 +23,30 @@ const CartButtons = () => {
           <span className='cart-value'>{total_items}</span>
         </span>
       </Link>
-      <button type='button' className='auth-btn'>
-        Login
-        <FaUserPlus />
-      </button>
+      {myUser ? 
+        (<button 
+          type='button' 
+          className='auth-btn' 
+          onClick={() => {
+            clearCart()
+            logout({returnTo: window.location.origin})
+          }
+          }
+        >
+          logout
+          <FaUserMinus />
+        </button>)  : (
+        <button 
+          type='button' 
+          className='auth-btn' 
+          onClick={loginWithRedirect}
+        >
+          Login
+          <FaUserPlus />
+        </button>
+      )
+      }
+      
     </Wrapper>
   );
 }

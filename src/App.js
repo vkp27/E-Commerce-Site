@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Navbar, Sidebar, Footer } from './components'
 
 //named import since we used named export in index.js
@@ -11,12 +11,14 @@ import {
   Cart,
   Error,
   Checkout,
-  PrivateRoute, 
+  //PrivateRoute,
+  AuthWrapper, 
 } from './pages'
 
 function App() {
 
   return (
+    <AuthWrapper>
     <Router>
       <Navbar />
       <Sidebar />
@@ -28,11 +30,20 @@ function App() {
         {<Cart />} />
         <Route exact path='/products' element= {<Products/>} />
         <Route exact path='/products/:id' element={<SingleProduct />} />
-        <Route exact path='/checkout' element= {<Checkout/>} />
+        {/* instead of route we use private route to setup a private path */}
+        
+        <Route exact path='/checkout'  element= {
+        // <PrivateRoute>
+        //   <Checkout />
+        // </PrivateRoute>
+        <Checkout />
+      } />
+      
         <Route path='*' element={<Error/>} />
       </Routes>
       <Footer />
     </Router>
+    </AuthWrapper>
   );  
 }
 
