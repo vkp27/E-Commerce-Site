@@ -71,9 +71,9 @@ import {
             return {...item, amount: newAmount}
           }
         }
-        else {
+        // else {
           return item
-        }
+        //}
       })
       return {...state, cart: tempCart}
     }

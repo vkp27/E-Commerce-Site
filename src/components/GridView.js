@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import products_reducer from '../reducers/products_reducer';
+// import products_reducer from '../reducers/products_reducer';
 import Product from './Product'
 
 const GridView = ({products}) => {
