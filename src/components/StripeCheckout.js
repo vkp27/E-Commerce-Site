@@ -53,20 +53,69 @@ const CheckoutForm = () => {
 
   //here is the logic for our stripe payment
   const createPaymentIntent = async () => {
-    console.log('hello from stripe checkout')
+    try {
+      const {data} = await axios.post(
+        '/.netlify/functions/create-payment-intent',
+        JSON.stringify({cart, shipping_fee, total_amount})
+      )
+      
+      setClientSecret(data.clientSecret)
+    } catch (error) {
+      //incase of axios we use this to get the error
+      //console.log(error.response)
+    }
   }
-  //we invoke the useEfeect every time the components load
+  //we invoke the useEffect every time the components load
   useEffect (() => {
     createPaymentIntent()
     // eslint-disable-next-line
   },[])
 
-  const handleChange = async(event) => {}
-  const handleSubmit = async(ev) => {}
+  const handleChange = async(event) => {
+    setDisabled(event.empty)
+    setError(event.error ? event.error.message : '')
+  }
+  const handleSubmit = async(ev) => {
+    ev.preventDefault()
+    setProcessing(true)
+    const payload = await stripe.confirmCardPayment(clientSecret,{
+      payment_method: {
+        card:elements.getElement(CardElement)
+      }
+    })
+    //we check for error
+    if(payload.error){
+      setError(`Payment Failed ${payload.error.message}`)
+      setProcessing(false)
+    }
+    else{
+      setError(null)
+      setProcessing(false)
+      setSucceeded(true)
+      setTimeout(()=>{
+        clearCart()
+        navigate('/')
+      },10000)
+    }
+  }
 
   return (
     //ids are used per stripe uses
     <div>
+      {succeeded ? (
+        <article>
+          <h4>Thank You!!</h4>
+          <h4>Your payment was successful!!</h4>
+          <h4>Redirecting to home page shortly</h4>
+        </article>
+      ) : (
+        <article>
+          <h4>Hello, {myUser && myUser.name}
+          </h4>
+          <p>Your total is {formatPrice(shipping_fee + total_amount)}</p>
+          <p>Test Card Number : 4242 4242 4242 4242</p>
+        </article>
+      )}
       <form id='payment-form' onSubmit={handleSubmit}>
         <CardElement 
           id='card-element'
